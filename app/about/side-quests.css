@@ -1,0 +1,185 @@
+/* About: "a life in side quests". A horizontal scrapbook driven by the normal vertical scroll.
+   Built only from the site's own tokens: hairline stone borders with pink corner marks (as on the project
+   cards), pink for annotations, ink for text. Scoped with the sq- prefix; nothing here touches other pages. */
+.sq {
+  --sq-hand: var(--font-hand), "Bradley Hand", cursive;
+  --sq-print: #fff;
+  --sq-tape: rgba(214, 79, 136, 0.24);
+}
+
+/* The About page is one full-window section: no page scroll, no footer (desktop). The wheel moves the canvas. */
+.sq-stage { position: relative; overflow: hidden; }
+.sq-track { position: absolute; left: 0; transform-origin: 0 0; will-change: transform; }
+.sq-hint {
+  position: absolute; z-index: 5; left: var(--gutter); top: 0.75rem; margin: 0; color: var(--muted-foreground);
+  font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; transition: opacity 0.3s ease;
+}
+html[data-sq] .site-footer { display: none; }
+/* Wide, tall windows: the scrapbook fills the window under the header. It is pinned with position: fixed rather than by
+   locking the page's own scroll, so leaving this page can never leave the document stuck. */
+@media (min-width: 900px) and (min-height: 680px) {
+  .sq-pin { position: fixed; left: 0; right: 0; bottom: 0; top: var(--sq-top, 5.5rem); }
+  .sq-stage { height: 100%; min-height: 0; }
+}
+.sq-canvas { position: relative; width: 100%; height: 100%; }
+
+.sq-i {
+  position: absolute; left: calc(var(--x) * 1px); top: calc(var(--y) * 1px);
+  width: calc(var(--w) * 1px); height: calc(var(--h, 0) * 1px);
+  transform: rotate(var(--r, 0deg)); margin: 0;
+}
+p.sq-i, svg.sq-i { height: auto; }
+.sq-canvas p, .sq-canvas li { font-size: 0.8125rem; line-height: 1.62; }
+
+/* Type and marks */
+.sq-lab { font-size: 0.75rem; text-transform: lowercase; letter-spacing: 0.04em; color: var(--foreground); font-weight: 400; }
+.sq-lab span { color: var(--muted-foreground); }
+.sq-sub { color: var(--muted-foreground); }
+.sq-h1 { font-family: var(--font-display); font-weight: 400; font-size: 2.125rem; line-height: 1.04; letter-spacing: -0.02em; margin-block: 0.25rem 0.5rem; }
+.sq-meta { color: var(--muted-foreground); margin-top: auto; letter-spacing: 0.06em; }
+.sq-canvas .sq-meta, .sq-canvas .mono { font-size: 0.6875rem; line-height: 1.6; }
+.sq-hatch { height: 9px; flex: none; margin-block: 0.25rem; background: repeating-linear-gradient(115deg, var(--mark) 0 1.5px, transparent 1.5px 4px); }
+.sq-doodle { color: var(--mark); }
+/* Kaomoji: little handwritten reactions. A CJK-capable fallback keeps the glyphs from breaking line height. */
+.sq-kao {
+  font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", "Noto Sans CJK JP", "Noto Sans JP", "Segoe UI Symbol", "Apple Symbols", sans-serif;
+  font-size: 1.25rem; line-height: 1.3; color: var(--mark-text); white-space: nowrap; letter-spacing: 0; font-weight: 400;
+}
+.sq-kao.sq-i { height: auto; width: auto; }
+.sq-intro__foot { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 0.5rem; }
+.sq-intro__foot .sq-meta { margin-top: 0; white-space: nowrap; flex: none; }
+.sq-spark-inline { position: absolute; top: -22px; right: -26px; }
+.sq-heart-inline { position: absolute; top: -44px; right: -34px; transform: rotate(-12deg); }
+.sq-heart-inline--b { top: -26px; right: -50px; transform: rotate(18deg); }
+.sq-kao-wrap { position: relative; display: inline-block; flex: none; }
+.sq-intro__foot .sq-kao { flex: none; white-space: nowrap; }
+.sq-note { font-family: var(--sq-hand); font-size: 1.375rem !important; line-height: 1.05 !important; font-weight: 500; color: var(--mark-text); }
+.sq-ticket {
+  background: var(--mark-text); color: #fff; font-family: var(--font-mono); text-transform: uppercase;
+  font-size: 0.6875rem !important; line-height: 1.35 !important; letter-spacing: 0.06em; padding: 0.55rem 0.75rem;
+  display: flex; align-items: center; margin: 0;
+}
+.sq-ticket--on { position: absolute; right: -14px; bottom: 16px; width: 112px; transform: rotate(-4deg); }
+
+/* Framed panel: hairline border plus pink corner marks, the same device as the project cards */
+.sq-frame { border: 1px solid var(--border); background: var(--background); padding: 1.5rem 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.sq-frame::after {
+  content: ""; position: absolute; inset: -1px; pointer-events: none;
+  --m: linear-gradient(var(--mark), var(--mark));
+  background:
+    var(--m) top left / 12px 1px no-repeat, var(--m) top left / 1px 12px no-repeat,
+    var(--m) top right / 12px 1px no-repeat, var(--m) top right / 1px 12px no-repeat,
+    var(--m) bottom left / 12px 1px no-repeat, var(--m) bottom left / 1px 12px no-repeat,
+    var(--m) bottom right / 12px 1px no-repeat, var(--m) bottom right / 1px 12px no-repeat;
+}
+.sq-free { display: flex; flex-direction: column; gap: 0.625rem; }
+
+/* Prints */
+.sq-photo { background: var(--sq-print); padding: 8px 8px 26px; border: 1px solid var(--border); display: flex; flex-direction: column; }
+.sq-photo > img, .sq-photo > .sq-ph { flex: 1; min-height: 0; width: 100%; object-fit: cover; }
+.sq-photo > img { display: block; }
+.sq-big { padding: 10px 10px 36px; }
+.sq-small { padding: 5px 5px 18px; }
+.sq-flat { padding: 5px; }
+.sq-wide { padding: 8px; }
+.sq-round { border-radius: 50%; padding: 4px; overflow: hidden; }
+.sq-round > .sq-ph, .sq-round > img { border-radius: 50%; }
+.sq-tape::before {
+  content: ""; position: absolute; left: 50%; top: -11px; width: 74px; height: 22px; z-index: 2;
+  transform: translateX(-50%) rotate(-3deg); background: var(--sq-tape);
+}
+/* Placeholder: a quiet paper tone, small corner label, easy to spot and swap */
+.sq-ph { display: flex; align-items: flex-end; padding: 0.4rem 0.5rem; background: var(--secondary); color: var(--muted-foreground); text-align: left; }
+.sq-ph .mono { font-size: 0.5625rem !important; text-transform: uppercase; letter-spacing: 0.1em; line-height: 1.3; }
+
+/* B. anime: a white sheet with overlapping prints */
+.sq-sheet { background: var(--sq-print); border: 1px solid var(--border); padding: 1.5rem 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 0.625rem; }
+.sq-sheet::before { content: ""; position: absolute; left: 36px; top: -10px; width: 70px; height: 20px; background: var(--sq-tape); transform: rotate(-4deg); }
+.sq-sheet__lead { max-width: 28ch; }
+.sq-thumbs { display: flex; padding-left: 0.5rem; margin-block: 0.25rem 0.5rem; }
+.sq-thumb { margin: 0 0 0 -0.5rem; width: 6.5rem; background: var(--sq-print); border: 1px solid var(--border); padding: 4px 4px 0; }
+.sq-thumb:nth-child(1) { transform: rotate(-4deg); margin-left: 0; }
+.sq-thumb:nth-child(2) { transform: rotate(2deg) translateY(6px); }
+.sq-thumb:nth-child(3) { transform: rotate(-2deg); }
+.sq-thumb .sq-ph, .sq-thumb img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+.sq-thumb figcaption { padding: 0.25rem 0.125rem 0.3rem; text-align: center; font-size: 0.5625rem !important; line-height: 1.25; color: var(--muted-foreground); }
+
+/* C. novels and boba: ruled paper */
+.sq-paper {
+  background: var(--secondary); padding: 1.5rem 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 0.625rem;
+  background-image: repeating-linear-gradient(transparent 0 25px, rgba(24, 24, 24, 0.06) 25px 26px);
+}
+.sq-paper > p { max-width: 17ch; }
+.sq-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.1rem; max-width: 12.5rem; }
+.sq-list li { display: flex; align-items: center; gap: 0.625rem; border-bottom: 1px dashed rgba(24, 24, 24, 0.25); padding-block: 0.12rem; font-family: var(--font-mono); font-size: 0.75rem !important; }
+.sq-list i { flex: none; width: 13px; height: 13px; border: 1px solid var(--muted-foreground); background: rgba(255, 255, 255, 0.5); }
+
+/* F. other things: small artifacts */
+.sq-minis { display: flex; align-items: flex-start; gap: 0.25rem; padding-left: 0.25rem; margin-top: 0.5rem; }
+.sq-mini { margin: 0; width: 4.75rem; background: var(--sq-print); border: 1px solid var(--border); padding: 4px 4px 0; }
+.sq-mini:nth-child(1) { transform: rotate(-3deg); } .sq-mini:nth-child(2) { transform: rotate(2deg) translateY(10px); }
+.sq-mini:nth-child(3) { transform: rotate(-2deg) translateY(2px); } .sq-mini:nth-child(4) { transform: rotate(3deg) translateY(12px); }
+.sq-mini:nth-child(5) { transform: rotate(-3deg); }
+.sq-mini .sq-ph, .sq-mini img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+.sq-mini figcaption { text-align: center; padding: 0.3rem 0 0.35rem; font-size: 0.5625rem !important; line-height: 1.2; color: var(--muted-foreground); }
+
+/* The last page of the scrapbook */
+.sq-end {
+  border: 1px solid var(--mark); background: var(--secondary); padding: 2.25rem 2.5rem;
+  background-image: repeating-linear-gradient(135deg, color-mix(in srgb, var(--mark) 7%, transparent) 0 2px, transparent 2px 11px);
+  display: flex; flex-direction: column; gap: 1.25rem; justify-content: center;
+}
+.sq-end__lab { color: var(--mark-text); letter-spacing: 0.12em; }
+.sq-end__big { font-family: var(--font-display); font-weight: 500; font-size: 3.25rem !important; line-height: 1 !important; letter-spacing: -0.025em; color: var(--mark-text); max-width: 11ch; text-wrap: balance; }
+.sq-end p:not(.sq-end__big):not(.mono) { max-width: 38ch; font-size: 0.9375rem; line-height: 1.7; }
+
+/* Small screens and short windows: a tidy two-column page, same order. Loose doodles and handwritten
+   notes belong to the big canvas, so they are left out here instead of landing as orphans between photos. */
+@media (max-width: 899px), (max-height: 679px) {
+  .sq-hint { display: none; }
+  .sq-stage { overflow: visible; }
+  .sq-track { position: static; width: auto !important; height: auto !important; transform: none !important; }
+  .sq-canvas {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 1rem; align-items: start; justify-items: center;
+    width: 100%; max-width: min(var(--wrap), 44rem); margin-inline: auto; padding: 1.5rem var(--gutter) 2.5rem;
+  }
+  .sq-canvas > .sq-doodle, .sq-canvas > .sq-note, .sq-canvas > .sq-kao.sq-i, .sq-canvas > .sq-ticket:not(.sq-ticket--on) { display: none; }
+  .sq-i { position: static; left: auto; top: auto; width: auto; height: auto; transform: none; }
+  .sq-frame, .sq-paper, .sq-end, .sq-sheet, .sq-photo { position: relative; }
+  .sq-frame, .sq-paper, .sq-end, .sq-sheet, .sq-free { grid-column: 1 / -1; justify-self: stretch; }
+  .sq-frame, .sq-paper, .sq-end, .sq-sheet { padding: 1.25rem; }
+  .sq-tape::before { display: none; }
+  .sq-h1 { font-size: clamp(2.25rem, 11vw, 3rem); }
+  .sq-photo { width: 100%; aspect-ratio: calc(var(--w) / var(--h)); transform: rotate(calc(var(--r) * 0.5)); }
+  .sq-photo.sq-big, .sq-photo.sq-wide, .sq-photo.sq-solo { grid-column: 1 / -1; }
+  .sq-photo.sq-big { max-width: 22rem; }
+  .sq-photo.sq-wide { max-width: 26rem; }
+  .sq-photo.sq-solo { max-width: 15rem; }
+  .sq-photo.sq-small:not(.sq-solo) { max-width: 11rem; }
+  .sq-photo.sq-round { width: 5.5rem; justify-self: end; margin-right: 0.5rem; }
+  .sq-paper > p { max-width: none; }
+  .sq-thumbs { padding-left: 0; }
+  .sq-thumb { width: 33%; margin-left: -0.25rem; }
+  .sq-minis { flex-wrap: wrap; gap: 0.75rem; }
+  .sq-end__big { font-size: clamp(2.25rem, 12vw, 3rem) !important; }
+  .sq-intro__foot { padding-right: 1.75rem; }
+  .sq-ticket--on { position: absolute; right: 0.5rem; bottom: 0.5rem; transform: rotate(-3deg); }
+}
+
+/* Wider than a phone: bigger photos beside each other, text panels keep a readable measure */
+@media (min-width: 600px) and (max-width: 899px), (min-width: 600px) and (max-height: 679px) {
+  .sq-canvas { gap: 2rem 1.5rem; }
+  .sq-sheet__lead, .sq-paper > p { max-width: 38ch; }
+}
+
+@media (prefers-reduced-motion: reduce) { .sq-hint { transition: none; } }
+
+/* Phones: the five small prints sit in one even row instead of 4 + 1 */
+@media (max-width: 599px) {
+  .sq-minis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.375rem; padding-left: 0; }
+  .sq-mini { width: 100%; }
+  .sq-mini figcaption { font-size: 0.5rem !important; overflow-wrap: anywhere; }
+}
+
+/* very narrow phones: keep the decorative hearts inside the viewport */
+@media (max-width: 380px) { .sq-kao-wrap .sq-heart-inline { right: 0 !important; } }

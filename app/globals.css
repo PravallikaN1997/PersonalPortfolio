@@ -1,26 +1,63 @@
 @import "tailwindcss";
 
+/* Design tokens — shadcn variable names, Vintage palette.
+   Pink is NOT mapped to --accent (shadcn uses that for hover surfaces).
+   It lives in --mark / --ring and is used sparingly. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8f7f4; /* warm white */
+  --foreground: #181818; /* ink */
+  --card: #f8f7f4;
+  --card-foreground: #181818;
+  --popover: #f8f7f4;
+  --popover-foreground: #181818;
+  --primary: #181818;
+  --primary-foreground: #f8f7f4;
+  --secondary: #efede8;
+  --secondary-foreground: #181818;
+  --muted: #efede8;
+  --muted-foreground: #6b675f; /* 5.25:1 on background */
+  --accent: #efede8;
+  --accent-foreground: #181818;
+  --destructive: #b3261e;
+  --border: #d9d6cf; /* stone — hairlines only, 1.35:1 */
+  --input: #d9d6cf;
+  --ring: #d64f88; /* focus ring, 3.68:1 (non-text) */
+  --radius: 0.25rem;
+
+  /* Vintage extras */
+  --mark: #d64f88; /* muted pink, non-text marks and large type */
+  --mark-text: #b93a72; /* pink for small text, 5.0:1 */
+
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --wrap: 77.5rem;
+  --measure: 58ch;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-mark: var(--mark);
+  --color-mark-text: var(--mark-text);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-spline-mono), ui-monospace, monospace;
+  --font-display: var(--font-mackinac), "Iowan Old Style", Georgia, serif;
 }
