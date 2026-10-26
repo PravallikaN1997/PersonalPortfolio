@@ -855,3 +855,6 @@ html[data-no-footer] .site-footer { display: none; }
 /* comfortable tap targets for the two small text links (WCAG 2.2 target size) */
 .wordmark { display: inline-block; padding-block: 0.25rem; margin-block: -0.25rem; }
 .gate__link { display: inline-block; padding-block: 0.2rem; margin-block: -0.2rem; }
+
+/* While the server checks access, the loading placeholder keeps the footer hidden too (it is removed once the real page replaces it) */
+html:has(.gate[aria-busy="true"]) .site-footer { display: none; }
