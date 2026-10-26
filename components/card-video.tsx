@@ -20,10 +20,23 @@ export function CardVideo({ mp4, webm, poster }: Props) {
     if (!video || !card) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const play = () => void video.play().catch(() => {});
+    // Still wanted? True while the pointer is over the card or it has keyboard focus.
+    const wanted = () => card.matches(":hover") || card.matches(":focus-visible");
+    const play = () => {
+      if (!wanted()) return;
+      // play() also starts buffering. If a browser rejects it right after a refresh, try once more when data arrives.
+      video.play().catch(() => {
+        video.addEventListener("canplay", () => wanted() && void video.play().catch(() => {}), { once: true });
+      });
+    };
     const stop = () => {
       video.pause();
       video.load(); // back to the poster
+    };
+    // A refresh with the pointer already resting on the card sends no "enter" event,
+    // so also start on the first movement over it, and once on mount.
+    const onMove = () => {
+      if (video.paused) play();
     };
 
     const canHover = window.matchMedia("(hover: hover)").matches;
@@ -32,10 +45,13 @@ export function CardVideo({ mp4, webm, poster }: Props) {
         if (card.matches(":focus-visible")) play();
       };
       card.addEventListener("pointerenter", play);
+      card.addEventListener("pointermove", onMove);
       card.addEventListener("pointerleave", stop);
       card.addEventListener("focusin", onFocusIn);
       card.addEventListener("focusout", stop);
+      if (card.matches(":hover")) play();
       return () => {
+        card.removeEventListener("pointermove", onMove);
         card.removeEventListener("pointerenter", play);
         card.removeEventListener("pointerleave", stop);
         card.removeEventListener("focusin", onFocusIn);
