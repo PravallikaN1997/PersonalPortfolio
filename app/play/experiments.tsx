@@ -197,7 +197,7 @@ const SPRITE = ["..XXXX..", ".XXXXXX.", "XX.XX.XX", "XX.XX.XX", "XXXXXXXX", "XXX
 /** A tiny jump game. Click, tap, or press Space or Enter to jump the blocks. */
 export function MiniGame() {
   const cv = useRef<HTMLCanvasElement>(null);
-  const st = useRef({ y: 0, vy: 0, ox: GW + 20, score: 0, mode: "idle" as "idle" | "run" | "over" | "paused", raf: 0, speed: 2.3 });
+  const st = useRef({ y: 0, vy: 0, ox: GW + 20, score: 0, mode: "idle" as "idle" | "run" | "over" | "paused", raf: 0, speed: 2.3, last: 0 });
   const box = useRef<HTMLDivElement>(null);
   const [label, setLabel] = useState("click to play");
 
@@ -218,14 +218,17 @@ export function MiniGame() {
     ctx.fillText(String(Math.floor(s.score / 6)).padStart(3, "0"), GW - 8, 14);
   }
 
-  function frame() {
+  function frame(now: number) {
     const s = st.current;
-    s.vy -= 0.42;
-    s.y = Math.max(0, s.y + s.vy);
+    // Step by elapsed time so the game runs at the same pace on 60Hz and 120Hz screens.
+    const k = s.last ? Math.min(2, Math.max(0.25, (now - s.last) / 16.67)) : 1;
+    s.last = now;
+    s.vy -= 0.42 * k;
+    s.y = Math.max(0, s.y + s.vy * k);
     if (s.y === 0) s.vy = 0;
-    s.ox -= s.speed;
-    s.score += 1;
-    s.speed = 2.3 + s.score / 900;
+    s.ox -= s.speed * k;
+    s.score += k;
+    s.speed = Math.min(5.2, 2.3 + s.score / 900);
     if (s.ox < -12) s.ox = GW + 10 + Math.random() * 70;
     const hit = s.ox < 36 && s.ox + 8 > 20 && s.y < 12;
     draw();
@@ -239,9 +242,9 @@ export function MiniGame() {
 
   function act() {
     const s = st.current;
-    if (s.mode === "paused") { s.mode = "run"; setLabel("jump!"); cancelAnimationFrame(s.raf); s.raf = requestAnimationFrame(frame); return; }
+    if (s.mode === "paused") { s.mode = "run"; s.last = 0; setLabel("jump!"); cancelAnimationFrame(s.raf); s.raf = requestAnimationFrame(frame); return; }
     if (s.mode === "run") { if (s.y === 0) { s.vy = 6.4; window.dispatchEvent(new Event("pl-chime")); } return; }
-    s.y = 0; s.vy = 0; s.ox = GW + 20; s.score = 0; s.speed = 2.3; s.mode = "run";
+    s.y = 0; s.vy = 0; s.ox = GW + 20; s.score = 0; s.speed = 2.3; s.last = 0; s.mode = "run";
     setLabel("jump!");
     cancelAnimationFrame(s.raf);
     s.raf = requestAnimationFrame(frame);
@@ -256,12 +259,16 @@ export function MiniGame() {
   }
 
   useEffect(() => {
+    // Pause when you click elsewhere, switch tabs, or scroll the game out of view.
     const out = (e: PointerEvent) => { if (box.current && !box.current.contains(e.target as Node)) pause(); };
     const hide = () => { if (document.hidden) pause(); };
     document.addEventListener("pointerdown", out);
     document.addEventListener("visibilitychange", hide);
-    window.addEventListener("blur", pause);
-    return () => { document.removeEventListener("pointerdown", out); document.removeEventListener("visibilitychange", hide); window.removeEventListener("blur", pause); };
+    const io = box.current && typeof IntersectionObserver !== "undefined"
+      ? new IntersectionObserver(([en]) => { if (en && !en.isIntersecting) pause(); }, { threshold: 0.1 })
+      : null;
+    if (io && box.current) io.observe(box.current);
+    return () => { document.removeEventListener("pointerdown", out); document.removeEventListener("visibilitychange", hide); io?.disconnect(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -416,7 +423,7 @@ function Critter({ kind, awake, cx, cy, s, bub, clipY, hop, near, say, label, on
   return (
     <g transform={`translate(${cx} ${cy})`}>
       <g ref={refCb} className={`pl-pet pl-hit pl-pet--${kind}${hop ? " is-hop" : ""}${near ? " is-near" : ""}`} role="button" tabIndex={0} aria-label={label}
-        onClick={(e) => { e.stopPropagation(); onPoke(); }}
+        onClick={(e) => { e.stopPropagation(); onPoke(); if (e.detail > 0) (e.currentTarget as SVGGElement).blur(); }}
         onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onPoke(); } }}>
         <rect x={-s / 2} y={-s} width={s} height={s} fill="transparent" />
         {clipY !== undefined ? <clipPath id={`pl-clip-${kind}`}><rect x={-s} y={-s * 1.6} width={s * 2} height={clipY - cy + s * 1.6} /></clipPath> : null}
@@ -592,10 +599,21 @@ export function PetCorner() {
     const depthEls = [...el.querySelectorAll<SVGGElement>("[data-kx]")];
     let raf = 0;
     let visible = true;
+    let still = false;
+    let lastWork = 0;
+    const written = new Map<Element, string>(); // last transform per element, so unchanged ones are never rewritten
+    const put = (n: Element, v: string) => { if (written.get(n) !== v) { written.set(n, v); n.setAttribute("transform", v); } };
     const TAU = Math.PI * 2;
     const burst = (p: number, from: number) => { const u = (p - from) / (1 - from - 0.1); return u > 0 && u < 1 ? Math.sin(u * TAU * 1.5) * (1 - u) * (1 - u) : 0; };
     const tick = (now: number) => {
       raf = requestAnimationFrame(tick);
+      // While the page glides, hold this scene still (its masks and blurs are costly to repaint) so the glide gets every frame.
+      const gliding = document.documentElement.hasAttribute("data-sq-pan");
+      if (gliding !== still) { still = gliding; el.classList.toggle("is-still", gliding); }
+      if (gliding) return;
+      // Ambient motion is slow, so ~24 updates a second looks the same and leaves Safari room to scroll.
+      if (now - lastWork < 40) return;
+      lastWork = now;
       const t = now / 1000;
       for (const n of sways) {
         const k = n.dataset.k;
@@ -617,20 +635,20 @@ export function PetCorner() {
         else if (k === "cloud") v = `translate(${(Math.sin(p * TAU) * 15 * a).toFixed(2)} 0)`;
         else if (k === "smoke") v = `translate(${(Math.sin(p * TAU) * 2.6).toFixed(2)} ${(Math.cos(p * TAU) * -2).toFixed(2)})`;
         else if (k === "pad") v = `translate(0 ${(Math.sin(p * TAU) * 0.9).toFixed(2)})`;
-        n.setAttribute("transform", v);
+        put(n, v);
       }
       const d = depth.current;
       d.x += (d.tx - d.x) * 0.07;
       d.y += (d.ty - d.y) * 0.07;
-      for (const g of depthEls) g.setAttribute("transform", `translate(${(-d.x * Number(g.dataset.kx)).toFixed(3)} ${(-d.y * Number(g.dataset.ky)).toFixed(3)})`);
+      for (const g of depthEls) put(g, `translate(${(-d.x * Number(g.dataset.kx)).toFixed(2)} ${(-d.y * Number(g.dataset.ky)).toFixed(2)})`);
     };
     const run = () => { if (!raf && visible && !document.hidden && !mq.matches) raf = requestAnimationFrame(tick); };
-    const stop = () => { cancelAnimationFrame(raf); raf = 0; };
+    const stop = () => { cancelAnimationFrame(raf); raf = 0; if (still) { still = false; el.classList.remove("is-still"); } };
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) run(); else stop(); });
     io.observe(el);
     const onVis = () => (document.hidden ? stop() : run());
     document.addEventListener("visibilitychange", onVis);
-    const onMq = () => { if (mq.matches) { stop(); sways.forEach((n) => n.removeAttribute("transform")); depthEls.forEach((g) => g.removeAttribute("transform")); } else run(); };
+    const onMq = () => { if (mq.matches) { stop(); written.clear(); sways.forEach((n) => n.removeAttribute("transform")); depthEls.forEach((g) => g.removeAttribute("transform")); } else run(); };
     mq.addEventListener("change", onMq);
     run();
     return () => { stop(); io.disconnect(); document.removeEventListener("visibilitychange", onVis); mq.removeEventListener("change", onMq); };
@@ -797,18 +815,29 @@ export function WindChime() {
       const a = ac.current;
       if (a.state === "suspended") void a.resume();
       const t = a.currentTime;
-      [1318.5, 1568, 1975.5, 2349.3].forEach((f, i) => {
-        const o = a.createOscillator();
-        const g = a.createGain();
-        o.type = "sine";
-        o.frequency.value = f * (1 + (Math.random() - 0.5) * 0.004);
-        const st = t + i * 0.12 + Math.random() * 0.04;
-        g.gain.setValueAtTime(0, st);
-        g.gain.linearRampToValueAtTime(0.045, st + 0.01);
-        g.gain.exponentialRampToValueAtTime(0.0001, st + 2);
-        o.connect(g).connect(a.destination);
-        o.start(st);
-        o.stop(st + 2.1);
+      // Soft, low-passed glass bells from a warm pentatonic set, played quietly.
+      const master = a.createGain();
+      master.gain.value = 0.5;
+      const lp = a.createBiquadFilter();
+      lp.type = "lowpass";
+      lp.frequency.value = 1800;
+      master.connect(lp).connect(a.destination);
+      const pool = [523.25, 587.33, 659.25, 783.99, 880, 1046.5];
+      const picks = [...pool].sort(() => Math.random() - 0.5).slice(0, 3).sort((x, y) => y - x);
+      picks.forEach((f, i) => {
+        const st = t + i * 0.22 + Math.random() * 0.06;
+        [[1, 0.016], [2.01, 0.004]].forEach(([mult, peak]) => {
+          const o = a.createOscillator();
+          const g = a.createGain();
+          o.type = "sine";
+          o.frequency.value = f * mult;
+          g.gain.setValueAtTime(0, st);
+          g.gain.linearRampToValueAtTime(peak, st + 0.04);
+          g.gain.exponentialRampToValueAtTime(0.0001, st + 2.6);
+          o.connect(g).connect(master);
+          o.start(st);
+          o.stop(st + 2.7);
+        });
       });
     } catch {
       /* sound is a bonus; the chime still moves */

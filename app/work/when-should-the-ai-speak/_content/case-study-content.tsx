@@ -161,8 +161,8 @@ export function CaseStudyContent({ title }: { title: string }) {
                   view={{ w: 1000, h: 510 }}
                   world={{ w: 1000, h: 510 }}
                   links={[
-                    { a: "client", b: "feedback", color: "#d9578b", from: [1, 0.5], to: [0, 0.5] },
-                    { a: "designer", b: "fail", color: "#d9a420", from: [1, 0.4], to: [0, 0.5] },
+                    { a: "client", b: "feedback", color: "var(--chart-pink)", from: [1, 0.5], to: [0, 0.5] },
+                    { a: "designer", b: "fail", color: "var(--chart-amber)", from: [1, 0.4], to: [0, 0.5] },
                   ]}
                   items={[
                     { id: "client", x: 24, y: 24, w: 540, z: 1, tag: "Client · Filing a brief", label: "Workbook: File a brief", href: `${SRC}/pm-client-brief.jpg`, children: (
@@ -209,8 +209,8 @@ export function CaseStudyContent({ title }: { title: string }) {
                   view={{ w: 1000, h: 440 }}
                   world={{ w: 1000, h: 440 }}
                   links={[
-                    { a: "rules", b: "block", color: "#d9a420", from: [1, 0.25], to: [0, 0.5] },
-                    { a: "rules", b: "source", color: "#d9a420", from: [1, 0.7], to: [0, 0.5] },
+                    { a: "rules", b: "block", color: "var(--chart-amber)", from: [1, 0.25], to: [0, 0.5] },
+                    { a: "rules", b: "source", color: "var(--chart-amber)", from: [1, 0.7], to: [0, 0.5] },
                   ]}
                   items={[
                     { id: "rules", x: 24, y: 24, w: 340, z: 1, tag: "Shared rules", label: "Workbook: shared PM-agent rules", href: `${SRC}/pm-shared-rules.jpg`, children: (

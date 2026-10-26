@@ -217,9 +217,9 @@ export function CaseStudyContent({ title }: { title: string }) {
                   view={{ w: 1000, h: 690 }}
                   world={{ w: 1000, h: 690 }}
                   links={[
-                    { a: "map", b: "insight", color: "#d9a420", from: [0.3, 1], to: [0.3, 0] },
-                    { a: "insight", b: "question", color: "#d9578b", from: [1, 0.5], to: [0, 0.5] },
-                    { a: "roles", b: "question", color: "#d9578b", from: [0, 0.5], to: [1, 0.5] },
+                    { a: "map", b: "insight", color: "var(--chart-amber)", from: [0.3, 1], to: [0.3, 0] },
+                    { a: "insight", b: "question", color: "var(--chart-pink)", from: [1, 0.5], to: [0, 0.5] },
+                    { a: "roles", b: "question", color: "var(--chart-pink)", from: [0, 0.5], to: [1, 0.5] },
                   ]}
                   items={[
                     { id: "map", x: 24, y: 44, w: 440, z: 1, tag: "Anxiety map · FigJam", label: "FigJam anxiety map across five stages", href: `${SRC}/anxiety-map.jpg`, children: (
@@ -265,10 +265,10 @@ export function CaseStudyContent({ title }: { title: string }) {
                   view={{ w: 1000, h: 690 }}
                   world={{ w: 1000, h: 690 }}
                   links={[
-                    { a: "sc", b: "c-unc", color: "#e0709a", from: [1, 0.55], to: [0, 0.35] },
-                    { a: "sc", b: "des", color: "#2fb386", from: [0.55, 1], to: [0, 0.12] },
-                    { a: "d-unc", b: "des", color: "#7a6be0", from: [1, 0.5], to: [0, 0.5] },
-                    { a: "des", b: "expected", color: "#7a6be0", from: [1, 0.14], to: [0, 0.35] },
+                    { a: "sc", b: "c-unc", color: "var(--chart-rose)", from: [1, 0.55], to: [0, 0.35] },
+                    { a: "sc", b: "des", color: "var(--chart-green)", from: [0.55, 1], to: [0, 0.12] },
+                    { a: "d-unc", b: "des", color: "var(--chart-violet)", from: [1, 0.5], to: [0, 0.5] },
+                    { a: "des", b: "expected", color: "var(--chart-violet)", from: [1, 0.14], to: [0, 0.35] },
                   ]}
                   items={[
                     { id: "sc", x: 26, y: 56, w: 420, z: 1, tag: "Client workbook", label: "Client workbook scenarios", href: `${SRC}/x-sc.jpg`, children: (

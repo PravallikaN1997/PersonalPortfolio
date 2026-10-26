@@ -118,9 +118,9 @@ export function CaseStudyContent({ title }: { title: string }) {
                   view={{ w: 1000, h: 470 }}
                   world={{ w: 1000, h: 470 }}
                   links={[
-                    { a: "board", b: "n1", color: "#d9a420", from: [1, 0.2], to: [0, 0.5] },
-                    { a: "board", b: "n2", color: "#d9578b", from: [1, 0.5], to: [0, 0.5] },
-                    { a: "board", b: "n3", color: "#d9a420", from: [1, 0.8], to: [0, 0.5] },
+                    { a: "board", b: "n1", color: "var(--chart-amber)", from: [1, 0.2], to: [0, 0.5] },
+                    { a: "board", b: "n2", color: "var(--chart-pink)", from: [1, 0.5], to: [0, 0.5] },
+                    { a: "board", b: "n3", color: "var(--chart-amber)", from: [1, 0.8], to: [0, 0.5] },
                   ]}
                   items={[
                     { id: "board", x: 24, y: 24, w: 560, z: 1, tag: "Synthesis", label: "Research synthesis board", href: `${SRC}/brainstorming.jpg`, children: (

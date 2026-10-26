@@ -1,19 +1,19 @@
 /* Play: "a few things I wanted to try". Built on the About scrapbook (sq- classes, ScrollTrack) with its own pl- parts.
    Site tokens only. Pink is the accent; paper, hairlines and ink do the rest. */
-.pl { --pl-card: #f7f5ec; --pl-paper: #fff; --pl-line: color-mix(in srgb, var(--foreground) 14%, transparent); }
+.pl { --pl-card: #f7f5ec; --pl-paper: var(--paper); --pl-line: color-mix(in srgb, var(--foreground) 14%, transparent); }
 .sq-i.pl-auto { height: auto; }
 
 /* Introduction */
-.sq-canvas .pl-lab { color: var(--mark-text); letter-spacing: 0.1em; font-size: 0.6875rem; margin: 0; }
-.sq-canvas .pl-h1 { font-family: var(--font-display); font-weight: 400; font-size: 2.125rem; line-height: 1.04; letter-spacing: -0.02em; margin: 0.5rem 0 1rem; }
-.sq-canvas .pl-lede { font-size: 0.8125rem; line-height: 1.62; color: var(--foreground); max-width: 36ch; margin: 0 0 1.75rem; }
-.sq-canvas .pl-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; font-size: 0.75rem; color: var(--foreground); }
+.sq-canvas .pl-lab { color: var(--mark-text); letter-spacing: 0.1em; font-size: var(--type-label); margin: 0; }
+.sq-canvas .pl-h1 { font-family: var(--font-display); font-weight: 400; font-size: var(--type-page-title); line-height: 1.04; letter-spacing: -0.02em; margin: 0.5rem 0 1rem; }
+.sq-canvas .pl-lede { font-size: var(--type-sm); line-height: 1.62; color: var(--foreground); max-width: 36ch; margin: 0 0 1.75rem; }
+.sq-canvas .pl-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; font-size: var(--type-xs); color: var(--foreground); }
 .pl-list span { display: inline-block; width: 1.9rem; color: var(--muted-foreground); }
 
 /* Caption: number, serif title, one mono line */
-.sq-canvas .pl-cap__n { margin: 0; font-size: 0.6875rem; letter-spacing: 0.08em; color: var(--mark-text); }
-.pl-cap__t { margin: 0.2rem 0 0.45rem; font-family: var(--font-display); font-weight: 400; font-size: 1.375rem; line-height: 1.15; letter-spacing: -0.01em; }
-.sq-canvas .pl-cap__b { font-family: var(--font-sans, inherit); margin: 0; max-width: 28ch; font-size: 0.8125rem; line-height: 1.62; color: var(--foreground); }
+.sq-canvas .pl-cap__n { margin: 0; font-size: var(--type-label); letter-spacing: 0.08em; color: var(--mark-text); }
+.pl-cap__t { margin: 0.2rem 0 0.45rem; font-family: var(--font-display); font-weight: 400; font-size: var(--type-caption); line-height: 1.15; letter-spacing: -0.01em; }
+.sq-canvas .pl-cap__b { font-family: var(--font-sans, inherit); margin: 0; max-width: 28ch; font-size: var(--type-sm); line-height: 1.62; color: var(--foreground); }
 
 /* Hand notes, kaomoji, arrows */
 .sq-canvas .sq-note.pl-hand { font-size: 1.375rem !important; line-height: 1.02 !important; width: calc(var(--w) * 1px); }
@@ -25,11 +25,9 @@
 
 /* Paper bits: tape, graph-paper scraps, little slips */
 .pl-tape { height: 22px; width: calc(var(--w) * 1px); background: var(--sq-tape); z-index: 3; }
-.pl-scrap { height: calc(var(--h) * 1px); z-index: 0; background-color: #fbfcfd; background-image:
-  linear-gradient(rgba(120, 140, 170, 0.45) 1px, transparent 1px),
-  linear-gradient(90deg, rgba(120, 140, 170, 0.45) 1px, transparent 1px); background-size: 8px 8px; border: 1px solid var(--border); }
-.sq-canvas p.pl-slip { background: var(--secondary); border: 1px solid var(--border); padding: 0.45rem 0.6rem; height: auto; font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.5; color: var(--foreground); box-shadow: 0 3px 8px rgb(24 24 24 / 0.05); z-index: 2; }
-.pl-slip .sq-kao { display: block; font-size: 1.0625rem; line-height: 1.2; margin-top: 0.1rem; }
+.pl-scrap { height: calc(var(--h) * 1px); z-index: 0; background-color: #fbfcfd; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M8 0H0V8' fill='none' stroke='%23788caa' stroke-opacity='.5' stroke-width='1'/%3E%3C/svg%3E"); background-size: 8px 8px; border: 1px solid var(--border); }
+.sq-canvas p.pl-slip { background: var(--secondary); border: 1px solid var(--border); padding: 0.45rem 0.6rem; height: auto; font-family: var(--font-mono); font-size: var(--type-xs); line-height: 1.5; color: var(--foreground); box-shadow: 0 3px 8px rgb(24 24 24 / 0.05); z-index: 2; }
+.pl-slip .sq-kao { display: block; font-size: var(--type-lead); line-height: 1.2; margin-top: 0.1rem; }
 
 /* White paper sheet holding a live preview */
 .pl-sheet { background: var(--pl-paper); border: 1px solid var(--border); padding: 9px; box-shadow: 0 8px 20px rgb(24 24 24 / 0.07); }
@@ -54,7 +52,7 @@
 .pl-pc--1 { all: unset; box-sizing: border-box; position: absolute; left: 9%; top: 0; width: 78%; height: 78%; display: grid; place-items: center; padding: 1.1rem 1.1rem 1.6rem; background: var(--pl-card); border: 1px solid var(--border); border-radius: 2px; box-shadow: 0 4px 12px rgb(24 24 24 / 0.07); transform: rotate(0.5deg); cursor: pointer; transition: transform 0.25s ease; }
 .pl-pc--1:hover { transform: rotate(-0.8deg) translateY(-2px); }
 .pl-pc--1:focus-visible { outline: 2px solid var(--mark); outline-offset: 3px; }
-.pl-pc__text { font-family: var(--font-mono); font-size: 0.875rem; font-weight: 500; line-height: 1.6; text-align: left; transform: rotate(-7deg); max-width: 18ch; color: var(--foreground); }
+.pl-pc__text { font-family: var(--font-mono); font-size: var(--type-body-sm); font-weight: 500; line-height: 1.6; text-align: left; transform: rotate(-7deg); max-width: 18ch; color: var(--foreground); }
 .pl-pc__icon { position: absolute; right: 0.75rem; bottom: 0.7rem; color: var(--muted-foreground); }
 
 /* 03 Sound Notes and 04 Mini Games: small windows */
@@ -76,9 +74,9 @@
 @keyframes pl-head { from { left: 0; } to { left: 100%; } }
 @keyframes pl-bar { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.6); } }
 .pl-window--game { background: color-mix(in srgb, var(--mark) 12%, var(--pl-paper)); }
-.pl-game__cv { display: block; flex: 1; min-height: 0; width: calc(100% - 14px); margin: 0 7px; image-rendering: pixelated; cursor: pointer; background: color-mix(in srgb, var(--mark) 16%, var(--background)); }
+.pl-game__cv { display: block; flex: 1; min-height: 0; width: calc(100% - 14px); margin: 0 7px; image-rendering: pixelated; cursor: pointer; touch-action: manipulation; background: color-mix(in srgb, var(--mark) 16%, var(--background)); }
 .pl-game__cv:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
-.sq-canvas .pl-game__label { margin: 0; padding: 0.2rem 0.5rem 0.3rem; font-size: 0.5625rem; letter-spacing: 0.08em; color: var(--muted-foreground); text-transform: uppercase; }
+.sq-canvas .pl-game__label { margin: 0; padding: 0.2rem 0.5rem 0.3rem; font-size: var(--type-micro); letter-spacing: 0.08em; color: var(--muted-foreground); text-transform: uppercase; }
 
 /* 06 Idea Shelf: layered notebook paper */
 .pl-pad { position: absolute; }
@@ -87,7 +85,7 @@
 .pl-clip { position: absolute; right: 28px; top: -8px; z-index: 3; }
 .pl-ideas { position: relative; z-index: 2; list-style: none; margin: 0; padding: 0.9rem 1.4rem 0.7rem; display: grid; gap: 0.15rem; }
 .pl-ideas li { margin: 0; }
-.pl-ideas button { all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 0.7rem; width: 100%; padding: 0.2rem 0; cursor: pointer; font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.5; border-bottom: 1px dashed color-mix(in srgb, var(--foreground) 22%, transparent); }
+.pl-ideas button { all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 0.7rem; width: 100%; padding: 0.2rem 0; cursor: pointer; font-family: var(--font-mono); font-size: var(--type-xs); line-height: 1.5; border-bottom: 1px dashed color-mix(in srgb, var(--foreground) 22%, transparent); }
 .pl-ideas button:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
 .pl-box { flex: none; display: grid; place-items: center; width: 12px; height: 12px; border: 1px solid var(--muted-foreground); background: rgb(255 255 255 / 0.6); color: var(--mark-text); }
 .pl-ideas .is-done { text-decoration: line-through; color: var(--muted-foreground); }
@@ -103,7 +101,9 @@
 .pl-tree circle { fill: color-mix(in srgb, var(--mark) 36%, var(--secondary)); stroke: var(--mark); stroke-width: 0.6; }
 .pl-tuft { stroke: color-mix(in srgb, var(--foreground) 40%, transparent); stroke-width: 0.8; fill: none; stroke-linecap: round; }
 .pl-hit { cursor: pointer; }
-.pl-hit:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+.pl-hit:focus, .pl-hit:focus-visible { outline: none; }
+.pl-hit:focus-visible .pl-pet__in { filter: drop-shadow(0 0 5px color-mix(in srgb, var(--mark) 55%, transparent)); }
+/* Illustration sizes: SVG scene units, intentionally not type tokens */
 .pl-zzz text { font-family: var(--font-hand), cursive; font-size: 9px; fill: var(--mark-text, var(--mark)); animation: pl-zzz 3.2s ease-in-out infinite; }
 .pl-zzz text:nth-child(2) { animation-delay: -1.6s; font-size: 11px; }
 @keyframes pl-zzz { 0%, 100% { opacity: 0.2; transform: translateY(2px); } 50% { opacity: 1; transform: translateY(-3px); } }
@@ -128,8 +128,8 @@
 .pl-dlg { border: 0; padding: 0.75rem 0.75rem 1rem; background: var(--pl-paper); max-width: min(92vw, 52rem); max-height: 90vh; margin: auto; box-shadow: 0 24px 60px rgb(0 0 0 / 0.25); }
 .pl-dlg::backdrop { background: rgb(24 24 24 / 0.55); }
 .pl-dlg img { display: block; max-width: 100%; max-height: 74vh; margin: 0 auto; }
-.pl-dlg .mono { margin: 0.6rem 0 0; font-size: 0.6875rem; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.08em; }
-.pl-dlg__x { all: unset; position: absolute; right: 0.9rem; bottom: 0.8rem; cursor: pointer; font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mark-text); }
+.pl-dlg .mono { margin: 0.6rem 0 0; font-size: var(--type-label); color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.08em; }
+.pl-dlg__x { all: unset; position: absolute; right: 0.9rem; bottom: 0.8rem; cursor: pointer; font-size: var(--type-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--mark-text); }
 .pl-dlg__x:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
 
 @media (hover: hover) {
@@ -142,14 +142,14 @@
   .pl .sq-canvas > * { order: var(--o, 99); }
   .pl .sq-canvas > .pl-deco, .pl .sq-canvas > .pl-flower, .pl .sq-canvas > .pl-star, .pl .sq-canvas > .pl-hand, .pl .sq-canvas > .pl-arrow, .pl .sq-canvas > .pl-kao { display: none; }
   .pl .sq-canvas > .pl-intro { width: 100%; margin-bottom: 0.75rem; }
-  .sq-canvas .pl-h1 { font-size: clamp(2.25rem, 11vw, 3rem); }
+  .sq-canvas .pl-h1 { font-size: var(--type-page-title); }
   .pl .sq-canvas > .pl-cap { width: 100%; margin-top: 1.25rem; }
   .pl .sq-canvas > .pl-art { position: relative; width: min(100%, 24rem); aspect-ratio: calc(var(--w) / var(--h)); justify-self: start; }
   .pl .sq-canvas > .sq-photo.pl-art { width: min(100%, 13rem); transform: rotate(calc(var(--r) * 0.5)); }
   .pl .sq-canvas > .sq-photo.pl-art:nth-of-type(n) { margin-left: 0; }
   .pl-sheet, .pl-window { transform: none; }
-  .pl-pc__text { font-size: 0.8125rem; }
-  .pl-ideas button { font-size: 0.8125rem; }
+  .pl-pc__text { font-size: var(--type-sm); }
+  .pl-ideas button { font-size: var(--type-sm); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -263,7 +263,7 @@
 }
 
 /* Pet Corner: a world that moves a little */
-.pl-sway { pointer-events: none; will-change: transform; }
+.pl-sway { pointer-events: none; }
 .pl-swaywrap { pointer-events: none; }
 @keyframes pl-tree { from { transform: rotate(calc(var(--a, 1) * -1.7deg)); } to { transform: rotate(calc(var(--a, 1) * 1.7deg)); } }
 @keyframes pl-bloomsway { 0%, 40%, 100% { transform: rotate(0); } 50% { transform: rotate(calc(var(--a, 1) * 4.5deg)); } 62% { transform: rotate(calc(var(--a, 1) * -3.2deg)); } 74% { transform: rotate(calc(var(--a, 1) * 1.8deg)); } 86% { transform: rotate(calc(var(--a, 1) * -0.6deg)); } }
@@ -275,7 +275,7 @@
 @keyframes pl-twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 0.9; } }
 .pl-bfly { pointer-events: none; }
 .pl-bfly__in { opacity: 0; animation: pl-bfly 44s ease-in-out infinite; }
-.pl-bfly path { fill: color-mix(in srgb, var(--mark) 40%, #fff); stroke: var(--mark); stroke-width: 0.6; transform-box: fill-box; transform-origin: center; animation: pl-flap 0.38s ease-in-out infinite alternate; }
+.pl-bfly path { fill: color-mix(in srgb, var(--mark) 40%, var(--paper)); stroke: var(--mark); stroke-width: 0.6; transform-box: fill-box; transform-origin: center; animation: pl-flap 0.38s ease-in-out infinite alternate; }
 @keyframes pl-flap { from { transform: scaleX(1); } to { transform: scaleX(0.5); } }
 @keyframes pl-bfly {
   0% { opacity: 0; transform: translate(0, 0); } 4% { opacity: 1; transform: translate(10px, -8px); } 12% { transform: translate(44px, -26px); }
@@ -295,3 +295,5 @@
 /* depth: each band of the painting (and the creatures standing in it) shifts at its own pace; the fixed plate behind keeps every edge filled */
 @keyframes pl-brush { 0% { transform: rotate(0); } 22% { transform: rotate(7deg); } 52% { transform: rotate(-4deg); } 78% { transform: rotate(1.8deg); } 100% { transform: rotate(0); } }
 @media (prefers-reduced-motion: reduce) { 
+/* Held still while the canvas glides: only this scene's own animations pause, so nothing else is re-styled. */
+.is-still *, .is-still *::before { animation-play-state: paused !important; }

@@ -118,8 +118,8 @@ export function CaseStudyContent({ title }: { title: string }) {
                   view={{ w: 1000, h: 450 }}
                   world={{ w: 1000, h: 450 }}
                   links={[
-                    { a: "plan", b: "rules", color: "#d9578b", from: [1, 0.5], to: [0, 0.5] },
-                    { a: "assume", b: "rules", color: "#d9a420", from: [1, 0.5], to: [0, 0.5] },
+                    { a: "plan", b: "rules", color: "var(--chart-pink)", from: [1, 0.5], to: [0, 0.5] },
+                    { a: "assume", b: "rules", color: "var(--chart-amber)", from: [1, 0.5], to: [0, 0.5] },
                   ]}
                   items={[
                     { id: "plan", x: 24, y: 24, w: 300, z: 1, tag: "Whiteboard", label: "Research plan", href: `${SRC}/research-plan.jpg`, children: (
@@ -153,9 +153,9 @@ export function CaseStudyContent({ title }: { title: string }) {
                   view={{ w: 1000, h: 440 }}
                   world={{ w: 1000, h: 440 }}
                   links={[
-                    { a: "wire", b: "n1", color: "#d9a420", from: [1, 0.3], to: [0, 0.5] },
-                    { a: "wire", b: "n2", color: "#d9578b", from: [1, 0.5], to: [0, 0.5] },
-                    { a: "wire", b: "n3", color: "#d9a420", from: [1, 0.7], to: [0, 0.5] },
+                    { a: "wire", b: "n1", color: "var(--chart-amber)", from: [1, 0.3], to: [0, 0.5] },
+                    { a: "wire", b: "n2", color: "var(--chart-pink)", from: [1, 0.5], to: [0, 0.5] },
+                    { a: "wire", b: "n3", color: "var(--chart-amber)", from: [1, 0.7], to: [0, 0.5] },
                   ]}
                   items={[
                     { id: "wire", x: 24, y: 60, w: 580, z: 1, tag: "Commander review", label: "Annotated wireframe", href: `${SRC}/testing-feedback.jpg`, children: (

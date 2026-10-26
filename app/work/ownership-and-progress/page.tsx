@@ -37,7 +37,7 @@ function GateFallback() {
     <section className="wrap gate" aria-busy="true">
       <div className="gate__inner">
         <p className="eyebrow mono">Case study</p>
-        <h1 className="display display--sm">{TITLE}</h1>
+        <p className="display display--sm">{TITLE}</p>
       </div>
     </section>
   );

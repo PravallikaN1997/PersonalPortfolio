@@ -160,7 +160,7 @@ export default function Play() {
 
           {/* 06 Pet Corner */}
           <Cap n="06" title="Pet Corner" blurb="A small, playful space for little creatures. Watch them roam, react, and keep you company." style={at(1210, 484, 200, 0, 0, 70)} />
-          <Scrap style={at(1940, 634, 96, 76, 0)} />
+          <Scrap style={at(1372, 652, 96, 76, 0)} />
           <div className="sq-i pl-sheet pl-art pl-pets-card" style={at(1420, 452, 540, 280, -1, 71)}>
             <PetCorner />
           </div>

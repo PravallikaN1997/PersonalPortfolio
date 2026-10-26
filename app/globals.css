@@ -4,6 +4,33 @@
    Pink is NOT mapped to --accent (shadcn uses that for hover surfaces).
    It lives in --mark / --ring and is used sparingly. */
 :root {
+  /* Sans / mono type tiers — sizes only */
+  --type-micro: 0.5625rem;
+  --type-micro-lg: 0.625rem;
+  --type-label: 0.6875rem;
+  --type-xs: 0.75rem;
+  --type-sm: 0.8125rem;
+  --type-body-sm: 0.875rem;
+  --type-body: 0.9375rem;
+  --type-md: 1rem;
+  --type-lead: 1.0625rem;
+  /* Serif type tiers (Mackinac) — sizes only */
+  --type-hero-sm: clamp(2rem, 9.4vw, 2.375rem);
+  --type-hero-md: clamp(2.375rem, 6vw, 3.25rem);
+  --type-hero-lg: clamp(3.25rem, 4.3vw, var(--h1-max, 3.875rem));
+  --type-display-sm: clamp(1.75rem, 4vw, 2.5rem);
+  --type-flagship: clamp(1.75rem, 2.3vw, 2.125rem);
+  --type-flagship-md: 1.75rem;
+  --type-flagship-sm: 1.5rem;
+  --type-card: clamp(1.375rem, 2vw, 1.5rem);
+  --type-page-title: clamp(2rem, 8vw, 2.125rem);
+  --type-page-end: 3.25rem;
+  --type-page-end-sm: clamp(2.25rem, 12vw, 3rem);
+  --type-section: 1.875rem;
+  --type-caption: 1.375rem;
+  --type-closing: clamp(1.75rem, 2.8vw, 2.5rem);
+  --type-closing-sm: clamp(1.75rem, 7vw, 2.5rem);
+
   --background: #f8f7f4; /* warm white */
   --foreground: #181818; /* ink */
   --card: #f8f7f4;
@@ -31,6 +58,22 @@
   --gutter: clamp(1rem, 4vw, 3rem);
   --wrap: 77.5rem;
   --measure: 58ch;
+
+  /* Paper and sticky-note palette (case-study boards, About/Play scrapbook) */
+  --paper: #fff;
+  --note-ink: #232323;
+  --note-pink: #f9dbe6; --note-pink-ink: #b0386b;
+  --note-yellow: #fdf0bf; --note-yellow-ink: #8a6511;
+  --note-mint: #d9f4e8; --note-mint-ink: #1d8a64;
+  --note-lav: #e5e2fb; --note-lav-ink: #5a4fc4;
+  --avatar-violet: #a37bd0; --avatar-blue: #5b92cf; --avatar-green: #5fa58a;
+
+  /* Diagram connector colours (case-study boards) */
+  --chart-pink: var(--mark);
+  --chart-rose: color-mix(in srgb, var(--mark) 82%, #fff);
+  --chart-amber: #d9a420;
+  --chart-violet: #7a6be0;
+  --chart-green: #2fb386;
 }
 
 @theme inline {

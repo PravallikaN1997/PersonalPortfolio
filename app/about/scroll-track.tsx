@@ -38,9 +38,18 @@ export function ScrollTrack({ width, height, xMin, xMax, path = "/about", childr
     let pos = 0; // how far the canvas has moved, in screen pixels
     let current = 0;
     let raf = 0;
+    // While the canvas is gliding, other pages' animation loops stand down so the glide gets every frame.
+    const root = document.documentElement;
+    let panTimer = 0;
+    const panning = () => {
+      if (!root.hasAttribute("data-sq-pan")) root.setAttribute("data-sq-pan", "");
+      window.clearTimeout(panTimer);
+      panTimer = window.setTimeout(() => root.removeAttribute("data-sq-pan"), 200);
+    };
 
     const paint = () => {
       raf = 0;
+      panning();
       current = calm ? pos : current + (pos - current) * 0.16;
       if (Math.abs(pos - current) < 0.4) current = pos;
       t.style.transform = `translate3d(${-current}px, 0, 0) scale(${scale})`;
@@ -63,7 +72,7 @@ export function ScrollTrack({ width, height, xMin, xMax, path = "/about", childr
     };
 
     const layout = () => {
-      if (!mq.matches) { pin.current?.style.removeProperty("--sq-top"); t.style.transform = ""; t.style.top = ""; t.style.left = ""; return; }
+      if (!mq.matches) { pin.current?.style.removeProperty("--sq-top"); t.style.transform = ""; t.style.top = ""; t.style.left = ""; t.setAttribute("data-ready", ""); hint.current?.setAttribute("data-ready", ""); return; }
       // The pinned scrapbook starts right under the site header, whatever its height is.
       const header = document.querySelector<HTMLElement>(".site-header");
       if (header) pin.current?.style.setProperty("--sq-top", `${Math.round(header.getBoundingClientRect().bottom)}px`);
@@ -78,6 +87,8 @@ export function ScrollTrack({ width, height, xMin, xMax, path = "/about", childr
       pos = Math.min(pos, travel);
       current = pos;
       paint();
+      t.setAttribute("data-ready", ""); // shown only once it is sized and placed, so it never flashes at the wrong scale
+      hint.current?.setAttribute("data-ready", "");
     };
 
     // A hidden, kept-alive copy of this page must never touch scrolling elsewhere.
@@ -122,6 +133,8 @@ export function ScrollTrack({ width, height, xMin, xMax, path = "/about", childr
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("keydown", onKey);
       if (raf) cancelAnimationFrame(raf);
+      window.clearTimeout(panTimer);
+      root.removeAttribute("data-sq-pan");
     };
   }, [width, height, xMin, xMax, here, path]);
 
