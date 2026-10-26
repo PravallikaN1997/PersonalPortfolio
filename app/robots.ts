@@ -3,6 +3,6 @@ import type { MetadataRoute } from "next";
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: "*", allow: "/" },
-    sitemap: "https://pravallikaspace.vercel.app/sitemap.xml",
+    sitemap: "https://pravallikan.vercel.app/sitemap.xml",
   };
 }

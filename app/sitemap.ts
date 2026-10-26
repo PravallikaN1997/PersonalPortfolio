@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const base = "https://pravallikaspace.vercel.app";
+const base = "https://pravallikan.vercel.app";
 
 // Password-protected case studies are left out on purpose.
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -25,7 +25,7 @@ const display = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://pravallikaspace.vercel.app"),
+  metadataBase: new URL("https://pravallikan.vercel.app"),
   title: { default: "Pravallika — Product Designer", template: "%s — Pravallika" },
   openGraph: { type: "website", siteName: "Pravallika", title: "Pravallika — Product Designer" },
   twitter: { card: "summary_large_image" },
