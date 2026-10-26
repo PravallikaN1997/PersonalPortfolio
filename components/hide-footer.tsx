@@ -12,5 +12,7 @@ export function HideFooter() {
     root.setAttribute("data-no-footer", "");
     return () => root.removeAttribute("data-no-footer");
   }, []);
-  return null;
+  // The server-rendered page runs this tiny script while the HTML is still being read, before the footer below
+  // is painted, so a refresh never flashes the footer. (The effect above covers in-app navigation.)
+  return <script dangerouslySetInnerHTML={{ __html: "document.documentElement.setAttribute('data-no-footer','')" }} />;
 }
