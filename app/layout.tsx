@@ -3,6 +3,7 @@ import { Geist, Spline_Sans_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import "./site.css";
 
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SiteHeader />
         <main id="main">{children}</main>
         <SiteFooter />
+        <Analytics />
       </body>
     </html>
   );
