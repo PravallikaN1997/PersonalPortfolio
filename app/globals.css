@@ -41,6 +41,7 @@
   --primary-foreground: #f8f7f4;
   --secondary: #efede8;
   --secondary-foreground: #181818;
+  --field-focus: #ffffff; /* input fill while focused: one step lighter than the paper */
   --muted: #efede8;
   --muted-foreground: #6b675f; /* 5.25:1 on background */
   --accent: #efede8;

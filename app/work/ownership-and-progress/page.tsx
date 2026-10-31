@@ -35,8 +35,8 @@ async function AccessGate() {
 function GateFallback() {
   return (
     <section className="wrap gate" aria-busy="true">
-      <div className="gate__inner">
-        <p className="eyebrow mono" style={{ justifyContent: "center" }}>Case study</p>
+      <div className="gate__body">
+        <p className="eyebrow mono">Case study</p>
         <p className="display gate__title">{TITLE}</p>
       </div>
     </section>
