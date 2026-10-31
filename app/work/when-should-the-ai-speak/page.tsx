@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { hasAccess } from "@/lib/case-study-access";
 import { PasswordGate } from "../ownership-and-progress/_components/password-gate";
 import { CaseStudyContent } from "./_content/case-study-content";
+import { GateFallback } from "../ownership-and-progress/_components/gate-fallback";
 
 const TITLE = "When should the AI speak?";
 const PATH = "/work/when-should-the-ai-speak";
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <Suspense fallback={<GateFallback />}>
+    <Suspense fallback={<GateFallback title={TITLE} />}>
       <AccessGate />
     </Suspense>
   );
@@ -32,13 +33,3 @@ async function AccessGate() {
   return (await hasAccess()) ? <CaseStudyContent title={TITLE} /> : <PasswordGate title={TITLE} returnTo={PATH} />;
 }
 
-function GateFallback() {
-  return (
-    <section className="wrap gate" aria-busy="true">
-      <div className="gate__body">
-        <p className="eyebrow mono">Case study</p>
-        <p className="display gate__title">{TITLE}</p>
-      </div>
-    </section>
-  );
-}

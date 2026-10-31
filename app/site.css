@@ -195,6 +195,7 @@ a:focus-visible, .card:focus-visible {
   margin: 0.625rem auto 0; max-width: 20ch; font-size: clamp(1.5rem, 1.1rem + 1.4vw, 1.875rem); line-height: 1.2; font-weight: 400; letter-spacing: 0;
   text-wrap: balance;
 }
+.gate__ph { height: 7.275rem; } /* the form + help line's height, so the title does not move when the gate streams in */
 .gate__form { display: grid; margin: 1.75rem auto 0; max-width: 28rem; text-align: left; }
 /* One enclosed control: the field and the button share a single ink border. Fill and stroke carry every state:
    default paper / hover muted / focus white + 2px ink / error white + 2px red / loading muted. */
@@ -862,3 +863,5 @@ html[data-no-footer] .site-footer { display: none; }
 
 /* While the server checks access, the loading placeholder keeps the footer hidden too (it is removed once the real page replaces it) */
 html:has(.gate[aria-busy="true"]) .site-footer { display: none; }
+/* Before hydration there are no hidden, stale pages, so :has() is safe and covers refresh and slow loads */
+html:not([data-hydrated]):has(.gate) .site-footer { display: none; }
