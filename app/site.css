@@ -195,7 +195,6 @@ a:focus-visible, .card:focus-visible {
   margin: 0.625rem auto 0; max-width: 20ch; font-size: clamp(1.5rem, 1.1rem + 1.4vw, 1.875rem); line-height: 1.2; font-weight: 400; letter-spacing: 0;
   text-wrap: balance;
 }
-.gate__ph { height: 7.275rem; } /* the form + help line's height, so the title does not move when the gate streams in */
 .gate__form { display: grid; margin: 1.75rem auto 0; max-width: 28rem; text-align: left; }
 /* One enclosed control: the field and the button share a single ink border. Fill and stroke carry every state:
    default paper / hover muted / focus white + 2px ink / error white + 2px red / loading muted. */
@@ -209,7 +208,7 @@ a:focus-visible, .card:focus-visible {
 @media (hover: hover) { .gate__row:has(.gate__input:hover):not(:has(.gate__input:focus)) { background: var(--muted); } }
 .gate__row:has(.gate__input:focus) { background: var(--field-focus); box-shadow: inset 0 0 0 1px var(--edge); }
 .gate__row:has(.gate__input[aria-invalid="true"]) { --edge: var(--destructive); background: var(--field-focus); box-shadow: inset 0 0 0 1px var(--edge); }
-.gate__row:has(.gate__input[readonly]) { background: var(--muted); }
+.gate__row:has(.gate__input[readonly]:not([tabindex])) { background: var(--muted); }
 .gate__input {
   width: 100%; min-width: 0; height: 3rem; padding: 0 1rem;
   font: inherit; font-size: var(--type-body); color: var(--foreground); background: transparent;
